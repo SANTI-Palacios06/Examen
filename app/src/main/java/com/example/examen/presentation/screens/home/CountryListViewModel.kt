@@ -3,14 +3,13 @@ package com.example.examen.presentation.screens.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.countryapp.domain.usecase.GetCountryListUseCase
+import com.example.examen.domain.common.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.example.examen.domain.common.Result
 
 @HiltViewModel
 class CountryListViewModel @Inject constructor(
@@ -24,22 +23,27 @@ class CountryListViewModel @Inject constructor(
         loadCountryList()
     }
 
-    private fun loadCountryList() {
+    fun loadCountryList() {
         viewModelScope.launch {
             getCountryListUseCase().collect { result ->
-                _uiState.update { state ->
-                    when (result) {
-                        is Result.Loading -> state.copy(
-                            isLoading = true
-                        )
-                        is Result.Success -> state.copy(
-                            countryList = result.data,
-                            isLoading = false,
+                when (result) {
+                    is Result.Loading -> {
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = true,
                             error = null
                         )
-                        is Result.Error -> state.copy(
-                            error = result.exception.message,
-                            isLoading = false
+                    }
+                    is Result.Success -> {
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            countryList = result.data,
+                            error = null
+                        )
+                    }
+                    is Result.Error -> {
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            error = result.exception.message ?: "Unknown error"
                         )
                     }
                 }
