@@ -5,7 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-
+import com.example.examen.presentation.screens.home.HomeScreen
+import com.example.examen.presentation.screens.detail.CountryDetailScreen
 
 @Composable
 fun Base(
@@ -16,7 +17,7 @@ fun Base(
         startDestination = rutas.Home.name,
     ) {
         composable(route = rutas.Home.name) {
-            CountryListScreen(
+            HomeScreen(
                 onCountryClick = { countryName ->
                     navController.navigate("${rutas.CountryDetail.name}/$countryName")
                 }

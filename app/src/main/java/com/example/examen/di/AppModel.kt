@@ -1,8 +1,8 @@
 package com.example.examen.di
 
-import CountryRepositoryImpl
-import com.app.countryapp.data.remote.api.CountryApi
 import com.app.countryapp.domain.repository.CountryRepository
+import com.example.examen.data.remote.api.CountryApi
+import com.example.examen.data.repository.CountryRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,6 +1,8 @@
-import com.app.countryapp.data.mapper.toDomain
-import com.app.countryapp.data.remote.api.CountryApi
+package com.example.examen.data.repository
+
 import com.app.countryapp.domain.repository.CountryRepository
+import com.example.examen.data.mapper.toDomain
+import com.example.examen.data.remote.api.CountryApi
 import com.example.examen.domain.model.Country
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,7 +15,7 @@ class CountryRepositoryImpl @Inject constructor(
     override suspend fun getCountryList(): List<Country> {
         val response = api.getCountryList()
         return response.map { countryListDto ->
-            countryListDto.toDomain()
+            api.getCountry(countryListDto.name.common).first().toDomain()
         }
     }
 
